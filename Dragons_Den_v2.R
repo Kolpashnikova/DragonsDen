@@ -1,5 +1,7 @@
 #### set up git with ssh ####
 
+## checking updates, Git not working
+
 #### git clone git@github.com:Kolpashnikova/VisualizationWorkshopHand+sOn.git ####
 
 #### open the project file ####

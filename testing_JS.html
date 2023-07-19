@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    
+	<h1>My Chart</h1>
+
+
+
+    <script>
+
+        const data = [
+        { observation: 50, time: 5.5 },
+        { observation: 30, time: 12 },
+        { observation: 70, time: 17 },
+        { observation: 90, time: 21 }
+        ];
+
+        // set the dimensions of the chart
+        const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+        const width = 800 - margin.left - margin.right;
+        const height = 800 - margin.top - margin.bottom;
+        
+        // create the x and y scales
+        const xScale = d3.scaleLinear()
+          .domain([0, 100]) // replace 100 with the maximum number of observations
+          .range([margin.left, width - margin.right]);
+        
+        const yScale = d3.scaleLinear()
+          .domain([0, 23.99]) // 24-hour time format
+          .range([height - margin.bottom, margin.top]);
+        
+        // create the SVG element
+        const svg = d3.select('body').append('svg')
+          .attr('width', width)
+          .attr('height', height);
+        
+        // create the left tempogram
+        const leftTempogram = svg.append('g')
+          .attr('transform', `translate(${width/4}, 0)`);
+
+        const leftArea = d3.area()
+          .x(d => xScale(d.observation))
+          .y0(yScale(0))
+          .y1(d => yScale(d.time));
+
+        leftTempogram.append("path")
+          .datum(data)
+          .attr("fill", "blue")
+          .attr("d", leftArea);
+
+        
+        // create the right tempogram
+        const rightTempogram = svg.append('g')
+          .attr('transform', `translate(${width*3/4}, 0)`);
+
+        const rightArea = d3.area()
+          .x(d => xScale(100 - d.observation))
+          .y0(yScale(0))
+          .y1(d => yScale(d.time));
+
+        rightTempogram.append("path")
+          .datum(data)
+          .attr("fill", "red")
+          .attr("d", rightArea);
+        </script>
+</body>
+</html>
